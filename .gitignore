@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# C++ build output
+build/
+cmake-build-*/
+out/
+
+# Local runtime data (databases and trained models are generated, not versioned)
+data/
+models/
+*.db
+*.joblib
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
