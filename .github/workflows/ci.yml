@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Configure C++ engine
+        run: cmake -S engine -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build C++ engine
+        run: cmake --build build --config Release
+
+      - name: C++ unit tests (Catch2 via CTest)
+        run: ctest --test-dir build -C Release --output-on-failure
+
+      - name: Python tests (pytest)
+        run: python -m pytest
